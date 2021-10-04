@@ -2,14 +2,14 @@ import {prospecto, prospectoGuardar, prospectoConsultaPorID, prospectoConsultaTo
 import MySQLDB from '../../DBUtils/MySQLDB';
 
 function SetController(app:any){
-    console.log("Controller.prospectos.SetController()");
+    console.log("Controller.prospecto.SetController()");
     app.route('/prospecto').get(getprospectos);
     app.route('/prospecto/:id').get(getprospectoId);
     app.route('/prospecto').post(postprospecto);
 }
 
 function getprospectos(req:any, res:any){
-    console.log("Controller.prospectos.getprospectos()");
+    console.log("Controller.prospecto.getprospectos()");
     let db = new MySQLDB();
     db.open().then(()=>{
         return prospectoConsultaTodos(db);
@@ -23,7 +23,7 @@ function getprospectos(req:any, res:any){
 }
 
 function getprospectoId(req:any, res:any){
-    console.log("Controller.prospectos.getprospectoId()");
+    console.log("Controller.prospecto.getprospectoId()");
     let id = req.params.id;
     let db = new MySQLDB();
     db.open().then(()=>{
@@ -38,7 +38,7 @@ function getprospectoId(req:any, res:any){
 }
 
 function postprospecto(req:any, res:any){
-    console.log("Controller.prospectos.postprospecto()");
+    console.log("Controller.prospecto.postprospecto()");
     let db = new MySQLDB();
 
     let _prospecto:prospecto = req.body;

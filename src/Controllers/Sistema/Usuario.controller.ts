@@ -3,18 +3,17 @@ import MySQLDB from '../../DBUtils/MySQLDB';
 import jwt = require('jsonwebtoken');
 import { Appconfig } from '../../appconfig'; 
 import { RedisDB } from '../../DBUtils/RedisDB';
-import { REPL_MODE_SLOPPY } from 'repl';
 
 function SetController(app:any){
-    console.log("Controller.usuarios.SetController()");
-    app.route('/usuarios').get(getUsuarios);
-    app.route('/usuarios/:id').get(getUsuarioId);
-    app.route('/usuarios').post(postUsuario);
+    console.log("Controller.usuario.SetController()");
+    app.route('/usuario').get(getUsuarios);
+    app.route('/usuario/:id').get(getUsuarioId);
+    app.route('/usuario').post(postUsuario);
     app.route('/login').post(postLogin);
 }
 
 function getUsuarios(req:any, res:any){
-    console.log("Controller.usuarios.getUsuarios()");
+    console.log("Controller.usuario.getUsuarios()");
     let db = new MySQLDB();
     db.open().then(()=>{
         return UsuarioConsultaTodos(db);
@@ -28,7 +27,7 @@ function getUsuarios(req:any, res:any){
 }
 
 function getUsuarioId(req:any, res:any){
-    console.log("Controller.usuarios.getUsuarioId()");
+    console.log("Controller.usuario.getUsuarioId()");
     let id = req.params.id;
     let db = new MySQLDB();
     db.open().then(()=>{
@@ -43,7 +42,7 @@ function getUsuarioId(req:any, res:any){
 }
 
 function postUsuario(req:any, res:any){
-    console.log("Controller.usuarios.postUsuario()");
+    console.log("Controller.usuario.postUsuario()");
     let db = new MySQLDB();
 
     let usuario:Usuario = req.body;
@@ -64,14 +63,9 @@ function postUsuario(req:any, res:any){
 }
 
 function postLogin(req:any, res:any) {
-    console.log("Controller.usuarios.postLogin()");
-    let usuarioReq:Usuario = req.body;
-    //se consulta el rol del usuario
-    //let redis = new RedisDB();
-    //redis.connect();
-    
+    console.log("Controller.usuario.postLogin()");
+    let usuarioReq:Usuario = req.body;    
     let db = new MySQLDB();
-
     db.open().then(()=>{
         return UsuarioConsultaPorUsuario(usuarioReq.usuario_usuario, db);
     }).then((usuario: Usuario[])=>{
