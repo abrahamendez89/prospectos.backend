@@ -6,16 +6,15 @@ const Usuario_entity_1 = require("../../Models/Sistema/Usuario.entity");
 const MySQLDB_1 = __importDefault(require("../../DBUtils/MySQLDB"));
 const jwt = require("jsonwebtoken");
 const appconfig_1 = require("../../appconfig");
-const RedisDB_1 = require("../../DBUtils/RedisDB");
 function SetController(app) {
-    console.log("Controller.usuarios.SetController()");
-    app.route('/usuarios').get(getUsuarios);
-    app.route('/usuarios/:id').get(getUsuarioId);
-    app.route('/usuarios').post(postUsuario);
+    console.log("Controller.usuario.SetController()");
+    app.route('/usuario').get(getUsuarios);
+    app.route('/usuario/:id').get(getUsuarioId);
+    app.route('/usuario').post(postUsuario);
     app.route('/login').post(postLogin);
 }
 function getUsuarios(req, res) {
-    console.log("Controller.usuarios.getUsuarios()");
+    console.log("Controller.usuario.getUsuarios()");
     let db = new MySQLDB_1.default();
     db.open().then(() => {
         return (0, Usuario_entity_1.UsuarioConsultaTodos)(db);
@@ -28,7 +27,7 @@ function getUsuarios(req, res) {
     });
 }
 function getUsuarioId(req, res) {
-    console.log("Controller.usuarios.getUsuarioId()");
+    console.log("Controller.usuario.getUsuarioId()");
     let id = req.params.id;
     let db = new MySQLDB_1.default();
     db.open().then(() => {
@@ -42,7 +41,7 @@ function getUsuarioId(req, res) {
     });
 }
 function postUsuario(req, res) {
-    console.log("Controller.usuarios.postUsuario()");
+    console.log("Controller.usuario.postUsuario()");
     let db = new MySQLDB_1.default();
     let usuario = req.body;
     db.open().then(() => {
@@ -60,11 +59,11 @@ function postUsuario(req, res) {
     });
 }
 function postLogin(req, res) {
-    console.log("Controller.usuarios.postLogin()");
+    console.log("Controller.usuario.postLogin()");
     let usuarioReq = req.body;
     //se consulta el rol del usuario
-    let redis = new RedisDB_1.RedisDB();
-    redis.connect();
+    //let redis = new RedisDB();
+    //redis.connect();
     let db = new MySQLDB_1.default();
     db.open().then(() => {
         return (0, Usuario_entity_1.UsuarioConsultaPorUsuario)(usuarioReq.usuario_usuario, db);

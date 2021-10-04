@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 const appconfig = require('./appconfig');
+import { Accesos } from './Accesos';
 import { Appconfig } from './appconfig'; 
 
 app.use(cors());
@@ -16,6 +17,9 @@ app.use(function(req:any, res:any, next:any) {
     //res.status(err.status || 500);
     console.log('Request URL:', req.originalUrl)
     console.log('Request Method:', req.method)
+
+    //validando acceso
+
     if(req.originalUrl == "/login"){
         return next()
     }
@@ -33,11 +37,17 @@ app.use(function(req:any, res:any, next:any) {
       console.log("Request Payload")
       req.user = user
       console.log(req.user)  
-      next()
+
+      let acceso = new Accesos();
+      acceso.Evaluar(req.user.usuario_rol,req.originalUrl, req.method).then((respuesta)=>{
+        if(respuesta){
+            next()
+            return;
+        }
+        return res.sendStatus(403)
+      });
+      
     })
-    //console.log({"mensaje": "Error al llamar al servicio.", "detalles": err});
-    //res.json({"resultado": 500, "mensaje": "Error al llamar al servicio.", "detalles": err});
-    //res.end();
 });
 app.use(function(err:any, req:any, res:any, next:any) {
     //res.status(err.status || 500);

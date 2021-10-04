@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 const appconfig = require('./appconfig');
+const Accesos_1 = require("./Accesos");
 const appconfig_1 = require("./appconfig");
 app.use(cors());
 //configurando la codificación del body
@@ -16,6 +17,7 @@ app.use(function (req, res, next) {
     //res.status(err.status || 500);
     console.log('Request URL:', req.originalUrl);
     console.log('Request Method:', req.method);
+    //validando acceso
     if (req.originalUrl == "/login") {
         return next();
     }
@@ -32,11 +34,15 @@ app.use(function (req, res, next) {
         console.log("Request Payload");
         req.user = user;
         console.log(req.user);
-        next();
+        let acceso = new Accesos_1.Accesos();
+        acceso.Evaluar(req.user.usuario_rol, req.originalUrl, req.method).then((respuesta) => {
+            if (respuesta) {
+                next();
+                return;
+            }
+            return res.sendStatus(403);
+        });
     });
-    //console.log({"mensaje": "Error al llamar al servicio.", "detalles": err});
-    //res.json({"resultado": 500, "mensaje": "Error al llamar al servicio.", "detalles": err});
-    //res.end();
 });
 app.use(function (err, req, res, next) {
     //res.status(err.status || 500);
