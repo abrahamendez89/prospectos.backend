@@ -74,7 +74,7 @@ function postLogin(req:any, res:any) {
             
             
 
-            res.json(token);
+            res.json({token:token});
         }
         else{
             res.sendStatus(403); //forbidden
