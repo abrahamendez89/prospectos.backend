@@ -61,18 +61,17 @@ function postUsuario(req, res) {
 function postLogin(req, res) {
     console.log("Controller.usuario.postLogin()");
     let usuarioReq = req.body;
-    //se consulta el rol del usuario
-    //let redis = new RedisDB();
-    //redis.connect();
     let db = new MySQLDB_1.default();
     db.open().then(() => {
         return (0, Usuario_entity_1.UsuarioConsultaPorUsuario)(usuarioReq.usuario_usuario, db);
     }).then((usuario) => {
         if (usuario[0] && usuario[0].usuario_contrasena == usuarioReq.usuario_contrasena) {
             const token = jwt.sign({ usuario_usuario: usuario[0].usuario_usuario, usuario_rol: usuario[0].usuario_rol }, appconfig_1.Appconfig.secret, { expiresIn: 1800 });
-            res.json(token);
+            db.close();
+            res.json({ token: token });
         }
         else {
+            db.close();
             res.sendStatus(403); //forbidden
         }
     }).catch((error) => {

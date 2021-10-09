@@ -21,14 +21,18 @@ class Accesos {
             console.log("Accesos.Evaluar()");
             let db = new MySQLDB_1.default();
             let apiSplit = api.split('/');
+            console.log("Evaluando acceso: " + api);
             let apiTransformada = '';
             if (apiSplit.length > 2) {
                 apiTransformada = '/' + apiSplit[1] + '/';
+                console.log("Api con parametro GET");
             }
             else {
                 apiTransformada = api;
+                console.log("Api sin parametro GET");
             }
             let respuesta = yield db.open().then(() => {
+                console.log("Consultando permisos: " + rol + " " + apiTransformada + " " + metodo);
                 return (0, acceso_entity_1.accesoConsultaValoresActivos)(rol, apiTransformada, metodo, db);
             }).then((acceso) => {
                 db.close();

@@ -72,11 +72,11 @@ function postLogin(req:any, res:any) {
         if(usuario[0] && usuario[0].usuario_contrasena == usuarioReq.usuario_contrasena){
             const token =  jwt.sign({usuario_usuario: usuario[0].usuario_usuario, usuario_rol:usuario[0].usuario_rol}, Appconfig.secret, { expiresIn: 1800 });
             
-            
-
+            db.close();
             res.json({token:token});
         }
         else{
+            db.close();
             res.sendStatus(403); //forbidden
         }
     }).catch((error:any)=>{
