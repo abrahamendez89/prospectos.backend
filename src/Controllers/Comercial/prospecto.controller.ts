@@ -7,6 +7,7 @@ function SetController(app:any){
     app.route('/prospecto').get(getprospectos);
     app.route('/prospecto/:id').get(getprospectoId);
     app.route('/prospecto').post(postprospecto);
+    app.route('/prospectow').post(postprospectow);
 }
 
 function getprospectos(req:any, res:any){
@@ -43,21 +44,13 @@ function postprospecto(req:any, res:any){
     console.log("Controller.prospecto.postprospecto()");
     let db = new MySQLDB();
 
-    let _prospecto:prospecto = req.body.Prospecto;
-    let _documentos:documento[] = req.body.Documentos;
-
+    let _prospecto:prospecto = req.body;
+    console.log(_prospecto);
     db.open().then(()=>{
         return db.beginTran();  
     }).then(()=>{
         return prospectoGuardar(_prospecto,db);
     }).then((_prospecto:prospecto[])=>{
-        console.log("guardando documentos");
-        for(var i = 0; i < _documentos.length; i++){
-            _documentos[i].prospecto_id = _prospecto[0].prospecto_id;
-            console.log("doc "+i);
-            documentoGuardar(_documentos[i], db);
-        }
-        console.log("documentos fin");
         return db.commitTran(_prospecto);
     }).then((_prospecto: prospecto[])=>{
         res.json(_prospecto[0]);
@@ -68,4 +61,29 @@ function postprospecto(req:any, res:any){
     });
 }
 
+function postprospectow(req:any, res:any){
+    console.log("Controller.prospecto.postprospectow()");
+    let db = new MySQLDB();
+
+    let _prospecto:prospecto = req.body.Prospecto;
+    let _documentos:documento[] = req.body.Documentos;
+
+    db.open().then(()=>{
+        return db.beginTran();  
+    }).then(()=>{
+        return prospectoGuardar(_prospecto,db);
+    }).then((_prospecto:prospecto[])=>{
+        for(var i = 0; i < _documentos.length; i++){
+            _documentos[i].prospecto_id = _prospecto[0].prospecto_id;
+            documentoGuardar(_documentos[i], db);
+        }
+        return db.commitTran(_prospecto);
+    }).then((_prospecto: prospecto[])=>{
+        res.json(_prospecto[0]);
+        return db.close();
+    }).catch((error:any)=>{
+        console.log("Entro en el catch de errores");
+        res.json(error);
+    });
+}
 export = { SetController: SetController};

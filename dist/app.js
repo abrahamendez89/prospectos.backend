@@ -11,8 +11,8 @@ const Accesos_1 = require("./Accesos");
 const appconfig_1 = require("./appconfig");
 app.use(cors());
 //configurando la codificación del body
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '100mb' }));
+app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
 app.use(function (req, res, next) {
     //res.status(err.status || 500);
     console.log('Request URL:', req.originalUrl);
@@ -47,6 +47,7 @@ app.use(function (req, res, next) {
 app.use(function (err, req, res, next) {
     //res.status(err.status || 500);
     console.log({ "mensaje": "Error al llamar al servicio.", "detalles": err });
+    res.status(500);
     res.json({ "resultado": 500, "mensaje": "Error al llamar al servicio.", "detalles": err });
     res.end();
 });

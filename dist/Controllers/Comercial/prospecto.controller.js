@@ -10,6 +10,7 @@ function SetController(app) {
     app.route('/prospecto').get(getprospectos);
     app.route('/prospecto/:id').get(getprospectoId);
     app.route('/prospecto').post(postprospecto);
+    app.route('/prospectow').post(postprospectow);
 }
 function getprospectos(req, res) {
     console.log("Controller.prospecto.getprospectos()");
@@ -41,6 +42,25 @@ function getprospectoId(req, res) {
 }
 function postprospecto(req, res) {
     console.log("Controller.prospecto.postprospecto()");
+    let db = new MySQLDB_1.default();
+    let _prospecto = req.body;
+    console.log(_prospecto);
+    db.open().then(() => {
+        return db.beginTran();
+    }).then(() => {
+        return (0, prospecto_entity_1.prospectoGuardar)(_prospecto, db);
+    }).then((_prospecto) => {
+        return db.commitTran(_prospecto);
+    }).then((_prospecto) => {
+        res.json(_prospecto[0]);
+        return db.close();
+    }).catch((error) => {
+        console.log("Entro en el catch de errores");
+        res.json(error);
+    });
+}
+function postprospectow(req, res) {
+    console.log("Controller.prospecto.postprospectow()");
     let db = new MySQLDB_1.default();
     let _prospecto = req.body.Prospecto;
     let _documentos = req.body.Documentos;

@@ -13,6 +13,7 @@ export class prospecto{
 	prospecto_tel:String = "";
 	prospecto_RFC:String = "";
 	prospecto_estatus:String = "";
+    prospecto_observaciones:String = "";
 }
 export function prospectoConsultaTodos(db:MySQLDB){
     console.log("Entity.prospecto.prospectoConsultaTodos()");
