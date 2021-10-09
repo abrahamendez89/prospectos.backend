@@ -10,7 +10,7 @@ class prospecto {
         this.prospecto_calle = "";
         this.prospecto_numero = "";
         this.prospecto_colonia = "";
-        this.prospecto_cod_postal = 0;
+        this.prospecto_cod_postal = "";
         this.prospecto_tel = "";
         this.prospecto_RFC = "";
         this.prospecto_estatus = "";

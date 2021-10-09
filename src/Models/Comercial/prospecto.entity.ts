@@ -1,5 +1,6 @@
 import MySQLDB from "../../DBUtils/MySQLDB"
 import InsertedModel from '../InsertedModel.entity';
+import { documento } from "./documento.entity";
 export class prospecto{
 	prospecto_id:Number = 0;
 	prospecto_nombre:String = "";
@@ -8,11 +9,10 @@ export class prospecto{
 	prospecto_calle:String = "";
 	prospecto_numero:String = "";
 	prospecto_colonia:String = "";
-	prospecto_cod_postal:Number = 0;
+	prospecto_cod_postal:String = "";
 	prospecto_tel:String = "";
 	prospecto_RFC:String = "";
 	prospecto_estatus:String = "";
-
 }
 export function prospectoConsultaTodos(db:MySQLDB){
     console.log("Entity.prospecto.prospectoConsultaTodos()");

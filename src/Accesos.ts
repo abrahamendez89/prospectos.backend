@@ -7,14 +7,18 @@ export class Accesos {
         console.log("Accesos.Evaluar()");
         let db = new MySQLDB();
         let apiSplit = api.split('/');
+        console.log("Evaluando acceso: "+api);
         let apiTransformada:String = '';
         if(apiSplit.length > 2){
             apiTransformada = '/'+apiSplit[1]+'/';
+            console.log("Api con parametro GET");
         }else{
             apiTransformada = api;
+            console.log("Api sin parametro GET");
         }
 
         let respuesta = await db.open().then(()=>{
+            console.log("Consultando permisos: "+rol+" "+apiTransformada+ " "+metodo);
             return accesoConsultaValoresActivos(rol,apiTransformada,metodo, db);
         }).then((acceso:acceso[])=>{
             db.close();
