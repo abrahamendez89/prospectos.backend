@@ -73,7 +73,7 @@ function postLogin(req:any, res:any) {
             const token =  jwt.sign({usuario_usuario: usuario[0].usuario_usuario, usuario_rol:usuario[0].usuario_rol}, Appconfig.secret, { expiresIn: 1800 });
             
             db.close();
-            res.json({token:token});
+            res.json({token:token, rol:usuario[0].usuario_rol });
         }
         else{
             db.close();

@@ -14,6 +14,7 @@ class prospecto {
         this.prospecto_tel = "";
         this.prospecto_RFC = "";
         this.prospecto_estatus = "";
+        this.prospecto_observaciones = "";
     }
 }
 exports.prospecto = prospecto;
