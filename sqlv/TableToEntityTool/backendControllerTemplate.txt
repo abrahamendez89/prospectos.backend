@@ -1,0 +1,61 @@
+import {@tabla, @tablaGuardar, @tablaConsultaPorID, @tablaConsultaTodos } from '../../Models/@modulo/@tabla.entity';
+import MySQLDB from '../../DBUtils/MySQLDB';
+
+function SetController(app:any){
+    console.log("Controller.@tablas.SetController()");
+    app.route('/@tabla').get(get@tablas);
+    app.route('/@tabla/:id').get(get@tablaId);
+    app.route('/@tabla').post(post@tabla);
+}
+
+function get@tablas(req:any, res:any){
+    console.log("Controller.@tablas.get@tablas()");
+    let db = new MySQLDB();
+    db.open().then(()=>{
+        return @tablaConsultaTodos(db);
+    }).then((_@tabla:@tabla[])=>{
+        res.json(_@tabla);
+        return db.close();
+    }).catch((error:any)=>{
+        console.log("Entro en el catch de errores");
+        res.json(error);
+    });
+}
+
+function get@tablaId(req:any, res:any){
+    console.log("Controller.@tablas.get@tablaId()");
+    let id = req.params.id;
+    let db = new MySQLDB();
+    db.open().then(()=>{
+        return @tablaConsultaPorID(id, db);
+    }).then((_@tabla:@tabla[])=>{
+        res.json(_@tabla[0]);
+        return db.close();
+    }).catch((error:any)=>{
+        console.log("Entro en el catch de errores");
+        res.json(error);
+    });
+}
+
+function post@tabla(req:any, res:any){
+    console.log("Controller.@tablas.post@tabla()");
+    let db = new MySQLDB();
+
+    let _@tabla:@tabla = req.body;
+
+    db.open().then(()=>{
+        return db.beginTran();  
+    }).then(()=>{
+        return @tablaGuardar(_@tabla,db);
+    }).then((_@tabla:@tabla[])=>{
+        return db.commitTran(_@tabla);
+    }).then((_@tabla: @tabla[])=>{
+        res.json(_@tabla[0]);
+        return db.close();
+    }).catch((error:any)=>{
+        console.log("Entro en el catch de errores");
+        res.json(error);
+    });
+}
+
+export = { SetController: SetController};
